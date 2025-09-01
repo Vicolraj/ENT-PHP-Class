@@ -1,0 +1,73 @@
+<html>
+	<head>
+	
+	
+	</head>
+	<style>
+		#tb1 {
+			margin-left:  auto;
+			margin-right: auto;
+			margin-top:   10%;
+		}
+	</style>
+	<body>
+		<form id="frmobj" method = "POST" action = "dbresources.php">
+			<table border = "1" id="tb1">
+				<tr>
+					<td>MATRIC NO</td>
+					<td><input type="text" name="matricno" id="matricno" required></td>
+				</tr>
+				<tr>
+					<td>FULL NAME</td>
+					<td><input type="text" name="fullname" id="fullname" required></td>
+				</tr>
+				<tr>
+					<td>GENDER</td>
+					<td>
+						<select name="gender" id="gender">
+							<option value="MALE">MALE</option>
+							<option value="FEMALE">FEMALE</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>CLASS</td>
+					<td>
+						<select name="classlevel" id="classlevel">
+							<option value="100">100</option>
+							<option value="200">200</option>
+							<option value="300">300</option>
+							<option value="400">400</option>
+							<option value="500">500</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>DEPARTMENT CODE</td>
+					<td><input type="text" name="departmentcode" id="departmentcode" required></td>
+				</tr>
+				<tr>
+					<td>PHONE NUMBER</td>
+					<td><input type="text" name="phoneno" id="phoneno" required></td>
+				</tr>
+				<tr>
+					<td>EMAIL ADDRESS</td>
+					<td><input type="email" name="email" id="email" required></td>
+				</tr>			
+				<tr>
+					<td>AGE</td>
+					<td><input type="number" name="age" id="age" required></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button type="submit">SUBMIT</button></td>
+				</tr>
+
+
+			</table>			
+		</form>
+	</body>
+	<script>
+	
+	</script>
+</html>

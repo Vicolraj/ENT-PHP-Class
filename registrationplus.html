@@ -1,0 +1,207 @@
+<html>
+	<head>
+		<title>ENT 302 2025 WEBCLASS </title>
+		<script src="jquery.js"></script>
+	</head>
+	<style>
+		table {
+			margin-left:  auto;
+			margin-right: auto;		
+		}
+		#tb1 {
+			margin-top:   10%;
+		}
+	</style>
+	<body>
+		<form id="frmobj">
+			<table border = "1" id="tb1">
+				<tr>
+					<td>MATRIC NO</td>
+					<td><input type="text" name="matricno" id="matricno" required></td>
+				</tr>
+				<tr>
+					<td>FULL NAME</td>
+					<td><input type="text" name="fullname" id="fullname" required></td>
+				</tr>
+				<tr>
+					<td>GENDER</td>
+					<td>
+						<select name="gender" id="gender">
+							<option value="MALE">MALE</option>
+							<option value="FEMALE">FEMALE</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>CLASS</td>
+					<td>
+						<select name="classlevel" id="classlevel">
+							<option value="100">100</option>
+							<option value="200">200</option>
+							<option value="300">300</option>
+							<option value="400">400</option>
+							<option value="500">500</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>DEPARTMENT CODE</td>
+					<td>
+						<select name="departmentcode" id="departmentcode">
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>PHONE NUMBER</td>
+					<td><input type="text" name="phoneno" id="phoneno" required></td>
+				</tr>
+				<tr>
+					<td>EMAIL ADDRESS</td>
+					<td><input type="email" name="email" id="email" required></td>
+				</tr>			
+				<tr>
+					<td>AGE</td>
+					<td><input type="number" name="age" id="age" required></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button type="button" onclick="submitrecord()">SUBMIT</button></td>
+				</tr>
+			</table>			
+		</form>
+		<table border="1" id="tb2">
+			<tr>
+				<td>S/NO</td>
+				<td>MATRIC NO</td>
+				<td>FULL NAME</td>
+				<td>GENDER</td>
+				<td>LEVEL</td>
+				<td>DEPARTMENT</td>
+				<td><center>ACTION</center></td>
+			</tr>
+			<tbody id="tbrows">
+			
+			</tbody>
+		
+		</table>
+
+
+
+		<script>
+			window.onload = startup;
+
+			document.addEventListener("DOMContentLoaded", function () {
+				document.getElementById("matricno").addEventListener("keyup", fetcharecord);
+				document.getElementById("matricno").addEventListener("change", fetcharecord);
+			});
+
+			function startup() {
+				fetchalldepartments();
+				fetchrecords();
+			}
+
+			function fetchrecords() {
+				document.getElementById("tbrows").innerHTML = "";
+				fetch("fetchallrecords.php")
+				.then(response => response.text())
+				.then(data => {
+					document.getElementById("tbrows").innerHTML = data;
+				});
+			}
+
+			function fetcharecord() {
+				const matricno = document.getElementById("matricno").value.trim();
+				const frmdata = new URLSearchParams({ matricno });
+
+				fetch("fetcharecord.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/x-www-form-urlencoded" },
+				body: frmdata.toString()
+				})
+				.then(response => response.text())
+				.then(data => {
+					if (data != 0) {
+					const row = JSON.parse(data);
+					document.getElementById("fullname").value = row.fullname;
+					document.getElementById("gender").value = row.gender;
+					document.getElementById("classlevel").value = row.classlevel;
+					document.getElementById("departmentcode").value = row.departmentcode;
+					document.getElementById("email").value = row.email;
+					document.getElementById("phoneno").value = row.phoneno;
+					document.getElementById("age").value = row.age;
+					}
+				});
+			}
+
+			function fetchalldepartments() {
+				const departmentSelect = document.getElementById("departmentcode");
+				departmentSelect.innerHTML = "";
+
+				fetch("fetchalldepartments.php")
+				.then(response => response.text())
+				.then(data => {
+					const dataarr = JSON.parse(data);
+					dataarr.forEach(dept => {
+					const option = document.createElement("option");
+					option.value = dept;
+					option.innerText = dept;
+					departmentSelect.appendChild(option);
+					});
+				});
+			}
+
+			function selectstudent(matricno) {
+				document.getElementById("matricno").value = matricno;
+				fetcharecord();
+			}
+
+			function deletestudent(matricno) {
+				if (confirm("Delete Selected Record Now ?") === true) {
+				const frmdata = new URLSearchParams({ matricno });
+
+				fetch("deletearecord.php", {
+					method: "POST",
+					headers: { "Content-Type": "application/x-www-form-urlencoded" },
+					body: frmdata.toString()
+				})
+					.then(response => response.text())
+					.then(data => {
+					alert(data);
+					fetchrecords();
+					});
+				}
+			}
+			// TO SUBMIT A RECORD
+
+			function submitrecord() {
+				const matricno = document.getElementById("matricno").value.trim();
+				const fullname = document.getElementById("fullname").value.trim();
+				const email = document.getElementById("email").value.trim();
+				const phoneno = document.getElementById("phoneno").value.trim();
+				const age = document.getElementById("age").value.trim();
+
+				if (!matricno) return alert("Enter the Matric Number Please");
+				if (!fullname) return alert("Enter the Full Name Please");
+				if (!email) return alert("Enter the Email Address Please");
+				if (!phoneno) return alert("Enter the Phone Number Please");
+				if (!age) return alert("Enter the Age Please");
+
+				const frm = document.getElementById("frmobj");
+				const frmdata = new URLSearchParams(new FormData(frm));
+
+				if (confirm("Save/Update Record Now ?") === true) {
+				fetch("dbresourcesplus.php", {
+					method: "POST",
+					body: frmdata
+				})
+					.then(response => response.text())
+					.then(data => {
+					alert(data);
+					fetchrecords();
+					});
+				}
+			}
+			</script>
+
+	</body>
+</html>

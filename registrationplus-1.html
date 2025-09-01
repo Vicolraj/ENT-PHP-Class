@@ -1,0 +1,149 @@
+<html>
+	<head>
+		<title>ENT 302 2025 WEBCLASS </title>
+		<script src="jquery.js"></script>
+	</head>
+	<style>
+		table {
+			margin-left:  auto;
+			margin-right: auto;		
+		}
+		#tb1 {
+			margin-top:   10%;
+		}
+	</style>
+	<body>
+		<form id="frmobj" method = "POST" action = "dbresources.php">
+			<table border = "1" id="tb1">
+				<tr>
+					<td>MATRIC NO</td>
+					<td><input type="text" name="matricno" id="matricno" required></td>
+				</tr>
+				<tr>
+					<td>FULL NAME</td>
+					<td><input type="text" name="fullname" id="fullname" required></td>
+				</tr>
+				<tr>
+					<td>GENDER</td>
+					<td>
+						<select name="gender" id="gender">
+							<option value="MALE">MALE</option>
+							<option value="FEMALE">FEMALE</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>CLASS</td>
+					<td>
+						<select name="classlevel" id="classlevel">
+							<option value="100">100</option>
+							<option value="200">200</option>
+							<option value="300">300</option>
+							<option value="400">400</option>
+							<option value="500">500</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>DEPARTMENT CODE</td>
+					<td><input type="text" name="departmentcode" id="departmentcode" required></td>
+				</tr>
+				<tr>
+					<td>PHONE NUMBER</td>
+					<td><input type="text" name="phoneno" id="phoneno" required></td>
+				</tr>
+				<tr>
+					<td>EMAIL ADDRESS</td>
+					<td><input type="email" name="email" id="email" required></td>
+				</tr>			
+				<tr>
+					<td>AGE</td>
+					<td><input type="number" name="age" id="age" required></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button type="button" onclick="submitrecord()">SUBMIT</button></td>
+				</tr>
+			</table>			
+		</form>
+		<table border="1" id="tb2">
+			<tr>
+				<td>S/NO</td>
+				<td>MATRIC NO</td>
+				<td>FULL NAME</td>
+				<td>GENDER</td>
+				<td>LEVEL</td>
+			</tr>
+			<tbody id="tbrows">
+			
+			</tbody>
+		
+		</table>
+
+
+
+	</body>
+	<script>
+		window.onload = startup;
+
+		function startup() {
+			fetchrecords();
+		}
+
+		function fetchrecords() {
+			const tbrows = document.getElementById("tbrows");
+			tbrows.innerHTML = "";
+
+			fetch("fetchallrecords.php")
+			.then(response => response.text())
+			.then(data => {
+				tbrows.innerHTML = data;
+			});
+		}
+
+		function submitrecord() {
+			const matricno = document.getElementById("matricno").value.trim();
+			const fullname = document.getElementById("fullname").value.trim();
+			const email = document.getElementById("email").value.trim();
+			const phoneno = document.getElementById("phoneno").value.trim();
+			const age = document.getElementById("age").value.trim();
+
+			if (matricno === '') {
+			alert("Enter the Matric Number Please");
+			return;
+			}
+			if (fullname === '') {
+			alert("Enter the Full Name Please");
+			return;
+			}
+			if (email === '') {
+			alert("Enter the Email Address Please");
+			return;
+			}
+			if (phoneno === '') {
+			alert("Enter the Phone Number Please");
+			return;
+			}
+			if (age === '') {
+			alert("Enter the Age Please");
+			return;
+			}
+
+			const url = "dbresourcesplus.php";
+			const frm = document.getElementById("frmobj");
+			const frmdata = new URLSearchParams(new FormData(frm));
+
+			if (confirm("Save/Update Record Now ?") === true) {
+			fetch(url, {
+				method: "POST",
+				body: frmdata
+			})
+			.then(response => response.text())
+			.then(data => {
+				alert(data);
+				fetchrecords();
+			});
+			}
+		}
+	</script>
+</html>
