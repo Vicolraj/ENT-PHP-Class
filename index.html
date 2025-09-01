@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vicolraj | Ent302</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body  >
+    <table>
+        <thead>
+            <tr class="head">
+                <td>ARITHMETIC OPERATORS</td>
+            </tr>
+        </thead>
+        <tr>
+            <td>Enter the First Number</td>
+            <td>
+                <input value="0" onkeyup="calculate()" id="num1" type="number">
+            </td>
+        </tr>
+        <tr>
+            <td>Enter the Second Number</td>
+            <td>
+                <input value="0" onkeyup="calculate()" id="num2" type="number">
+            </td>
+        </tr>
+        <tr>
+            <td>Select Operator</td>
+            <td>
+                <select onchange="calculate()" name="" id="operators">
+                    <option value="+">Addition</option>
+                  
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Result</td>
+            <td>
+                <div id="display">0.00</div>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="column-span: all; text-align: center;">
+                <button id="compute">Compute</button>
+            </td>
+        </tr>
+        
+    </table>
+    <script src="app.js"></script>
+</body>
+</html>
